@@ -1,1 +1,50 @@
-<p>alunos works!</p>
+<div class="container search-table">
+
+    <!-- 
+    <button class="btn btn-primary btn-xs pull-right" (click)="criarAluno()">
+        Criar um novo aluno
+    </button> -->
+    <div class="search-box">
+        <div class="row">
+            <div class="col-md-9">
+                <input type="text" id="myInput" class="form-control" placeholder="Pesquisar libs" />
+            </div>
+            <div class="col-auto">
+                <button class="but btn-lg btn-success">Pesquisar</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="search-list">
+
+        <table class="table table-striped custab">
+            <thead>
+                <button class="btn btn-primary btn-xs pull-right" (click)="criarAluno()">
+                    Criar um novo aluno
+                </button>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Turma</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tr *ngFor="let aluno of lista_de_alunos$ | async">
+                <td>{{aluno.id}}</td>
+                <td>{{aluno.nome}}</td>
+                <td>{{aluno.turma}}</td>
+                <td class="text-center">
+                    <button class="btn btn-outline-warning mb-1 btn-sm" (click)="editarAluno(aluno)">
+                        Atualizar
+                    </button>
+                    <button class="btn btn-outline-danger mb-1 btn-sm" (click)="deletarAluno(aluno)">
+                        Deletar
+                    </button>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</div>
