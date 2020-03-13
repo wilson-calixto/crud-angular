@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AlunosService } from './alunos.service';
 import { AlertModalService } from '../shared/alert-modal.service';
-import { Title } from '@angular/platform-browser';
 import { take, switchMap, catchError } from 'rxjs/operators';
 import { EMPTY, Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-alunos',
@@ -15,22 +16,43 @@ export class AlunosComponent implements OnInit {
 
   constructor(
     private alunosService : AlunosService,
-    private alertModalService : AlertModalService) { }
+    private alertModalService : AlertModalService,
+    private authService : AuthService,
+    
+    ) { }
+  
+  
+  readonly FIELDS = 'nome,turma';
 
+  queryField = new FormControl();
   lista_de_alunos$: Observable<any[]>;
 
   ngOnInit(): void {
     // this.carregarAlunos();
-    this.onRefresh();
+    this.atualizaATabela();
+  }
+
+  montaFiltrosDeBusca(queryField){
+    return {
+      params: {
+        search: queryField,
+        fields: this.FIELDS
+      }
+    }
+  }
+
+  pesquisar(){
+    const filtrosDaBusca = this.montaFiltrosDeBusca(this.queryField.value)
+    this.atualizaATabela(filtrosDaBusca);
   }
 
 
-  // carregarAlunos(){
-  //   this.lista_de_alunos$ =this.alunosService.getAlunos();
-  // }
+  atualizaATabela(filtrosDaBusca=null) {
+    if(filtrosDaBusca===null){
+      filtrosDaBusca = this.montaFiltrosDeBusca('')
+    }
 
-  onRefresh() {
-    this.lista_de_alunos$ = this.alunosService.list().pipe(
+    this.lista_de_alunos$ = this.alunosService.list(filtrosDaBusca).pipe(
       // map(),
       // tap(),
       // switchMap(),
@@ -56,7 +78,7 @@ export class AlunosComponent implements OnInit {
       )
       .subscribe(
           success => {
-            this.onRefresh();
+            this.atualizaATabela();
             this.alertModalService.showAlertSuccess('Operação realizada com sucesso'); 
 
           },
@@ -77,6 +99,10 @@ export class AlunosComponent implements OnInit {
     this.exibeModal(null)
   }
 
+  mostraFuncionalidade(funcionalidade){
+    return this.authService.temAcessoAFuncionalidade(funcionalidade)
+  }
+
   exibeModal(aluno){
     console.log('aluno',aluno)
     const result$=this.alertModalService.openEditModal(aluno);
@@ -87,7 +113,7 @@ export class AlunosComponent implements OnInit {
     )
     .subscribe(
       success => {
-        this.onRefresh();
+        this.atualizaATabela();
         this.alertModalService.showAlertSuccess('Operação realizada com sucesso'); 
 
       },

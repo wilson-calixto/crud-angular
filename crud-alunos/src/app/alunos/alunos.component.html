@@ -1,16 +1,13 @@
 <div class="container search-table">
 
-    <!-- 
-    <button class="btn btn-primary btn-xs pull-right" (click)="criarAluno()">
-        Criar um novo aluno
-    </button> -->
+
     <div class="search-box">
         <div class="row">
             <div class="col-md-9">
-                <input type="text" id="myInput" class="form-control" placeholder="Pesquisar libs" />
+                <input type="text" id="myInput" class="form-control" [formControl]="queryField"  placeholder="Pesquisar libs" />
             </div>
             <div class="col-auto">
-                <button class="but btn-lg btn-success">Pesquisar</button>
+                <button class="but btn-lg btn-success" (click)="pesquisar()">Pesquisar</button>
             </div>
         </div>
     </div>
@@ -21,7 +18,8 @@
 
         <table class="table table-striped custab">
             <thead>
-                <button class="btn btn-primary btn-xs pull-right" (click)="criarAluno()">
+
+                <button *ngIf="mostraFuncionalidade('CRIAR_ALUNO')" class="btn btn-primary btn-xs pull-right" (click)="criarAluno()">
                     Criar um novo aluno
                 </button>
                 <tr>
@@ -36,10 +34,10 @@
                 <td>{{aluno.nome}}</td>
                 <td>{{aluno.turma}}</td>
                 <td class="text-center">
-                    <button class="btn btn-outline-warning mb-1 btn-sm" (click)="editarAluno(aluno)">
+                    <button *ngIf="mostraFuncionalidade('EDITAR_ALUNO')" class="btn btn-outline-warning mb-1 btn-sm" (click)="editarAluno(aluno)">
                         Atualizar
                     </button>
-                    <button class="btn btn-outline-danger mb-1 btn-sm" (click)="deletarAluno(aluno)">
+                    <button *ngIf="mostraFuncionalidade('DELETAR_ALUNO')" class="btn btn-outline-danger mb-1 btn-sm" (click)="deletarAluno(aluno)">
                         Deletar
                     </button>
                 </td>

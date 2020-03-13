@@ -15,8 +15,17 @@ export class AlunosService {
   ]
 
 
-  list() {
-    return this.http.get<any[]>(this.API_URL)
+  list(parametrosDaBusca=null) {
+    
+    if(parametrosDaBusca===null){
+      return this.http.get<any[]>(this.API_URL)
+      .pipe(
+        delay(2000),
+        tap(console.log)
+      );
+    }
+    console.log(parametrosDaBusca)
+    return this.http.get<any[]>(this.API_URL,parametrosDaBusca)
       .pipe(
         delay(2000),
         tap(console.log)
