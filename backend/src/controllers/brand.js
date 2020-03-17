@@ -16,9 +16,11 @@ class BrandsCtrl {
      
     static async addBrand(req, res, next){
         try{
-            console.log('addbrand',req.body.name)
             const brand = { name: req.body.name };
+            console.log('addbrand',brand)
+
             const modelResponse = await BrandsDAO.addBrandFromDb(brand);
+
             res.status(200).json(modelResponse.ops[0]);
         }catch (e){
             res.status(500).json({ e })

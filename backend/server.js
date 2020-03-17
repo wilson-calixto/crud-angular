@@ -9,10 +9,18 @@ const modelsRouter = require('./src/routes/model');
 const brandsRouter = require('./src/routes/brand');
 const setupsRouter = require('./src/routes/setup');
 const testLogRouter = require('./src/routes/test-log');
+
+const AlunosRouter = require('./src/routes/alunos');
+
+
 const { ModelsDAO } = require('./src/models/model');
 const { BrandsDAO } = require('./src/models/brand');
 const { TestLogDAO } = require('./src/models/test-log');
 const { SetupsDAO } = require('./src/models/setup');
+
+const { AlunosDAO } = require('./src/models/alunos');
+
+
 /**
  * Creating a new express app
  */
@@ -53,7 +61,7 @@ const mongodb = require('mongodb');
 const mongoClient = mongodb.MongoClient;
 const url = "mongodb+srv://andre:andre@clusterandre-di55c.gcp.mongodb.net/test?retryWrites=true&w=majority";
 
-// const url = "mongodb+srv://wilsonTestMongo:<22129000wccj2012>@clusterwilltest-leywv.mongodb.net/test?retryWrites=true&w=majority";
+
 
 
 
@@ -61,6 +69,8 @@ app.use('/models', modelsRouter);
 app.use('/brands', brandsRouter);
 app.use('/setups', setupsRouter);
 app.use('/logs', testLogRouter);
+
+app.use('/alunos', AlunosRouter);
 
 /**
  * Get port from environment and store in Express.
@@ -76,11 +86,13 @@ app.use('/logs', testLogRouter);
 // const server = require('http').createServer(app);
 
 
-
+const databaseName = 'test'
 
 mongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }).then(async function (database) {
     // await ModelsDAO.injectDb(database);
     await BrandsDAO.injectDb(database);
+    await AlunosDAO.injectDb(database,databaseName)
+
     console.log("oudri cand larray")
 
     // await SetupsDAO.injectDb(database);

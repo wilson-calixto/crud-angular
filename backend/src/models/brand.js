@@ -47,7 +47,7 @@ class BrandsDAO {
     
     static async addBrandFromDb(brand){
         try{
-            console.log('addBrandFromDb',req.body.name)
+            console.log('addBrandFromDb',brand)
             return await brandsCollection.insertOne(brand);
         }catch(e){
             console.error(`Unable to add brand: ${e}`);

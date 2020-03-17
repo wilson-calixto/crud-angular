@@ -9,7 +9,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 })
 export class AlunoFormularioComponent implements OnInit {
   
-  @Input() aluno = {id:'',nome:'testststs',turma:'testststs'};
+  @Input() aluno = {_id:'',nome:'testststs',turma:'testststs'};
 
   form:FormGroup
   result: Subject<any>;
@@ -21,7 +21,7 @@ export class AlunoFormularioComponent implements OnInit {
 
   ngOnInit(): void {
     this.form  = this.fb.group({
-      id: [''],
+      _id: [''],
       nome:['',[Validators.required,Validators.minLength(5)]],
       turma:['',[Validators.required,Validators.minLength(5)]]
 
@@ -37,7 +37,7 @@ export class AlunoFormularioComponent implements OnInit {
   
   populaForm(){
 
-    this.form.get('id').setValue(this.aluno.id)
+    this.form.get('_id').setValue(this.aluno._id)
     this.form.get('nome').setValue(this.aluno.nome)
     this.form.get('turma').setValue(this.aluno.turma)
   

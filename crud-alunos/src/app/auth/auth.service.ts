@@ -50,7 +50,7 @@ export class AuthService {
       }      
     });
 
-    console.log('temAcessoAFuncionalidade',funcionalidade,resp)
+    // console.log('temAcessoAFuncionalidade',funcionalidade,resp)
     return resp
   }
 
