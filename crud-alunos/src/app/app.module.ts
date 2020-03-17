@@ -21,6 +21,7 @@ import { AuthGuardGuard } from './guards/auth-guard.guard';
 import { CursosGuard } from './guards/cursos.guard';
 import { AlunosGuard } from './guards/alunos.guard';
 import { AuthModule } from './auth/auth.module';
+import { LoginGuard } from './guards/login.guard';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,17 +33,17 @@ import { AuthModule } from './auth/auth.module';
     AppRoutingModule,
     HttpClientModule,
     ModalModule.forRoot(),
+    AuthModule,
     CursosModule,
-    // LoginModule,
+
 
     AlunosModule,
     SharedModule,
     BrowserAnimationsModule,
     MatSliderModule,
-    CustomMaterialModule,
-    AuthModule
+    CustomMaterialModule
   ],
-  providers: [AuthService,AuthGuardGuard,CursosGuard,AlunosGuard],
+  providers: [AuthService,AuthGuardGuard,CursosGuard,AlunosGuard,LoginGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

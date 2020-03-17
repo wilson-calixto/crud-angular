@@ -9,28 +9,55 @@ import { Usuario } from 'src/app/shared/usuario';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  showSpinner=false
-  nome=''
+  showSpinner = false
+  nome = ''
+  usuario: Usuario;
+  loggedIn;
   constructor(
-    private authService : AuthService,
+    private authService: AuthService,
     private router: Router
-    ) { }
-  usuario : Usuario = new Usuario()
+  ) { }
+
+
   ngOnInit(): void {
     this.usuario = new Usuario()
-  }
-  login(){
-    this.authService.fazerLogin(this.usuario).subscribe(
-        success => {
-          if(success.usuarioAutenticado){
-            this.router.navigate(['/alunos'])
-          }
-        },
-        error => {
-          console.log('error')
+    this.usuario.nome = 'max@gmail.com';
+    this.usuario.senha = '123';
 
-        }
-    );
+    this.authService.loggedIn.subscribe(loggedIn => {
+      this.loggedIn = loggedIn;
+    });
+    // this.login();
+    console.log("on init")
+  }
+  login() {
+    this.authService.fazerLogin(this.usuario)//.subscribe(
+    //   resp => {
+    //     console.log('login component',resp)
+    //     if (resp.usuarioAutenticado) {
+    //       this.router.navigate(['/alunos'])
+    //     }
+    //   },
+    //   error => {
+    //     console.log('error')
+
+    //   }
+    // );
+  }
+  // login_old() {
+  //   this.authService.fazerLogin(this.usuario).subscribe(
+  //     success => {
+  //       if (success.usuarioAutenticado) {
+  //         this.router.navigate(['/alunos'])
+  //       }
+  //     },
+  //     error => {
+  //       console.log('error')
+
+  //     }
+  //   );
+
+
 
     // .asObservable()
     // .pipe(
@@ -48,6 +75,6 @@ export class LoginComponent implements OnInit {
     //   )
 
     // console.log("login")
-  }
+  // }
 
 }

@@ -9,7 +9,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 })
 export class AlunoFormularioComponent implements OnInit {
   
-  @Input() aluno = {id:'',nome:'',turma:''};
+  @Input() aluno = {id:'',nome:'testststs',turma:'testststs'};
 
   form:FormGroup
   result: Subject<any>;

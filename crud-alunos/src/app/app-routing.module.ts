@@ -4,6 +4,7 @@ import { AuthGuardGuard } from './guards/auth-guard.guard';
 import { CursosGuard } from './guards/cursos.guard';
 import { AlunosGuard } from './guards/alunos.guard';
 import { AuthModule } from './auth/auth.module';
+import { LoginGuard } from './guards/login.guard';
 
 
 const routes: Routes = [
@@ -23,7 +24,9 @@ const routes: Routes = [
     canLoad: [AuthGuardGuard]
   },
   { path :'login',
-  loadChildren: ()=> import('./auth/auth.module').then(m => m.AuthModule) 
+  loadChildren: ()=> import('./auth/auth.module').then(m => m.AuthModule),
+  canActivate: [AuthGuardGuard]
+
   }
   
 ];

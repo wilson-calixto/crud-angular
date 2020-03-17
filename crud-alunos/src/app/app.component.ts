@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth/auth.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -10,20 +11,19 @@ export class AppComponent implements OnInit {
 
   constructor(private authService : AuthService) { }
   title = 'crud-alunos';
-  mostrarMenu=true;
+  mostrarMenu ;
 
   ngOnInit(): void {
 
-    // this.authService.usuarioLogouEmitter.addListener()
-      // .subscribe(arg => 
-      //   if(arg==='1'){
-      //     this.mostrarMenu=true
-      //   }else{
-      //     this.mostrarMenu=false
-      //   }
-         
-        
-      //   );
+    this.authService.loggedIn.subscribe(loggedIn => {
+      this.mostrarMenu = loggedIn;
+    });
     
+  }
+  async logout() {
+    // console.log
+    await this.authService.logout()
+    // this.authService.verificaLogin()
+
   }
 }

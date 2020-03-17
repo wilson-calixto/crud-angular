@@ -14,21 +14,13 @@ export class AuthGuardGuard implements CanActivate, CanLoad {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | boolean {
-      
-      return this.verificaLogin();
-  }
-
-  canLoad(route: Route): boolean {  
-    return this.verificaLogin();
-  }
-
-  private verificaLogin(){
-    if(this.authService.usuarioEstaAutenticado()){
-      console.log('this.authService.usuarioEstaAutenticado()',this.authService.usuarioEstaAutenticado())
       return true
-    }
-    console.log('this.authService.usuarioEstaAutenticado()',this.authService.usuarioEstaAutenticado())
-    this.router.navigate(['/login'])
-    return false
+      return this.authService.verificaLogin()
   }
+
+  canLoad(route: Route): Observable<boolean> | boolean {  
+    return true
+    return this.authService.verificaLogin()
+  }
+
 }

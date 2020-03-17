@@ -7,7 +7,7 @@ import { take, tap, delay} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AlunosService {
-  API_URL='http://localhost:3000/alunos'
+  API_URL='http://localhost:3000/brand'
   constructor(private http: HttpClient) { }
 
   alunos=[
@@ -48,7 +48,8 @@ export class AlunosService {
   }
 
   criarAluno(aluno){
-    return this.http.post(`${this.API_URL}`,aluno).pipe(take(1));
+    const brand={name:'name'}
+    return this.http.post(`${this.API_URL}`,brand).pipe(take(1));
   }
 
   editarAluno(aluno){

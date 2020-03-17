@@ -1,0 +1,290 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+const cors = require('cors')
+const express = require('express');
+const path = require('path');
+
+const bodyParser = require('body-parser')
+
+const app = express();
+const server = require('http').createServer(app);
+
+
+const modelsRouter = require('./src/routes/model');
+const brandsRouter = require('./src/routes/brand');
+const setupsRouter = require('./src/routes/setup');
+const testLogRouter = require('./src/routes/test-log');
+const { ModelsDAO } = require('./src/models/model');
+const { BrandsDAO } = require('./src/models/brand');
+const { TestLogDAO } = require('./src/models/test-log');
+const { SetupsDAO } = require('./src/models/setup');
+
+
+
+const defaultTopics = require('./src/models/default-topics');
+
+const mongodb = require('mongodb');
+const mongoClient = mongodb.MongoClient;
+
+const url = "mongodb+srv://wilsonTestMongo:<22129000wccj2012>@clusterwilltest-leywv.mongodb.net/test?retryWrites=true&w=majority";
+app.use(cors())
+app.options('*', cors());
+app.use(bodyParser.json({limit: "100mb"}));
+app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit:500000}));
+
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(function(req, res, next){
+    
+    next();
+});
+
+
+
+
+app.use('/models', modelsRouter);
+app.use('/brands', brandsRouter);
+app.use('/setups', setupsRouter);
+app.use('/logs', testLogRouter);
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+
+
+
+mongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }).then(async function(database){
+    // await ModelsDAO.injectDb(database);
+    await BrandsDAO.injectDb(database);
+    // await SetupsDAO.injectDb(database);
+
+    server.listen(port);
+
+});
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+
+module.exports = app;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Some hardcoded users to make the demo work
+ */
+const appUsers = {
+    'max@gmail.com': {
+        email: 'max@gmail.com',
+        name: 'Max Miller',
+        pw: '1234' // YOU DO NOT WANT TO STORE PW's LIKE THIS IN REAL LIFE - HASH THEM FOR STORAGE
+    },
+    'lily@gmail.com': {
+        email: 'lily@gmail.com',
+        name: 'Lily Walter',
+        pw: '1235' // YOU DO NOT WANT TO STORE PW's LIKE THIS IN REAL LIFE - HASH THEM FOR STORAGE
+    }
+};
+
+/**
+ * Simple session example from tutorials point, unrelated to rest of the application.
+ */
+app.get('/api', function (req, res) {
+    if (req.session.page_views) {
+        req.session.page_views++;
+        res.send("You visited this page " + req.session.page_views + " times");
+    } else {
+        req.session.page_views = 1;
+        res.send("Welcome to this page for the first time!");
+    }
+});
+
+/**
+ * Middleware to check that a payload is present
+ */
+const validatePayloadMiddleware = (req, res, next) => {
+    if (req.body) {
+        next();
+    } else {
+        res.status(403).send({
+            errorMessage: 'You need a payload'
+        });
+    }
+};
+
+/**
+ * Log the user in.
+ * User needs to provide pw and email, this is then compared to the pw in the "database"
+ * If pw and email match, the user is fetched and stored into the session.
+ * Finally the user is returned from the request.
+ */
+app.post('/api/login', validatePayloadMiddleware, (req, res) => {
+    const user = appUsers[req.body.email];
+    if (user && user.pw === req.body.password) {
+        const userWithoutPassword = { ...user };
+        delete userWithoutPassword.pw;
+        req.session.user = userWithoutPassword;
+        res.status(200).send({
+            user: userWithoutPassword
+        });
+    } else {
+        res.status(403).send({
+            errorMessage: 'Permission denied!'
+        });
+    }
+});
+
+/**
+ * Check if user is logged in.
+ */
+app.get('/api/login', (req, res) => {
+    req.session.user ? res.status(200).send({ loggedIn: true }) : res.status(200).send({ loggedIn: false });
+});
+
+/**
+ * Log the user out of the application.
+ */
+app.post('/api/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            res.status(500).send('Could not log out.');
+        } else {
+            res.status(200).send({});
+        }
+    });
+});
+
+/**
+ * Checks if user is logged in, by checking if user is stored in session.
+ */
+const authMiddleware = (req, res, next) => {
+    if (req.session && req.session.user) {
+        next();
+    } else {
+        res.status(403).send({
+            errorMessage: 'You must be logged in.'
+        });
+    }
+};
+
+
+/**
+ * Some hardcoded values of account balances of users and method to fetch the balance.
+ */
+const accountBalances = {
+    'max@gmail.com': 53762,
+    'lily@gmail.com': 4826
+};
+const getBalance = (email) => {
+    return accountBalances[email];
+};
+
+/**
+ * Endpoint to get users' account balance. Uses AuthMiddleware, such that only authenticated users can fetch balance.
+ */
+app.get('/api/balance', authMiddleware, (req, res) => {
+    const user = req.session.user;
+    const balance = getBalance(user.email);
+    if (balance) {
+        res.status(200).send({
+            balance: balance
+        })
+    } else {
+        res.status(403).send({
+            errorMessage: 'Access Denied.'
+        });
+    }
+});
+
+
