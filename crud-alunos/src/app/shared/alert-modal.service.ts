@@ -11,6 +11,21 @@ export class AlertModalService {
 
   constructor(private modalService: BsModalService) { }
   
+
+  openGenericEditModal(element,FormularioComponent){
+    let initialState;
+    
+    if(element!==null){
+      initialState = {
+        aluno : element,
+      };
+    }
+
+
+    const bsModalRef: BsModalRef = this.modalService.show(FormularioComponent,{initialState});
+    return (<any>bsModalRef.content).result;
+  }
+
   openEditModal(aluno){
     let initialState;
     

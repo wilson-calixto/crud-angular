@@ -3,12 +3,11 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Subject } from 'rxjs';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
-  selector: 'app-aluno-formulario',
-  templateUrl: './aluno-formulario.component.html',
-  styleUrls: ['./aluno-formulario.component.scss']
+  selector: 'app-cursos-formulario',
+  templateUrl: './cursos-formulario.component.html',
+  styleUrls: ['./cursos-formulario.component.scss']
 })
-export class AlunoFormularioComponent implements OnInit {
-  
+export class CursosFormularioComponent implements OnInit {
   @Input() element = {_id:'',nome:'testststs',turma:'testststs'};
 
   form:FormGroup

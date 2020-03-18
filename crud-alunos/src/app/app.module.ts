@@ -43,7 +43,7 @@ import { LoginGuard } from './guards/login.guard';
     MatSliderModule,
     CustomMaterialModule
   ],
-  providers: [AuthService,AuthGuardGuard,CursosGuard,AlunosGuard,LoginGuard],
+  providers: [AuthService,AuthGuardGuard,CursosGuard,AlunosGuard,LoginGuard,SharedModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
