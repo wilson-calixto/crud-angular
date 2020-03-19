@@ -11,14 +11,18 @@ const setupsRouter = require('./src/routes/setup');
 const testLogRouter = require('./src/routes/test-log');
 
 const AlunosRouter = require('./src/routes/alunos');
+const CursosRouter = require('./src/routes/cursos');
 
 
 const { ModelsDAO } = require('./src/models/model');
 const { BrandsDAO } = require('./src/models/brand');
+const { dbConnection } = require('./src/models/database');
+
 const { TestLogDAO } = require('./src/models/test-log');
 const { SetupsDAO } = require('./src/models/setup');
 
 const { AlunosDAO } = require('./src/models/alunos');
+const { CursosDAO } = require('./src/models/cursos');
 
 
 /**
@@ -65,13 +69,6 @@ const url = "mongodb+srv://andre:andre@clusterandre-di55c.gcp.mongodb.net/test?r
 
 
 
-app.use('/models', modelsRouter);
-app.use('/brands', brandsRouter);
-app.use('/setups', setupsRouter);
-app.use('/logs', testLogRouter);
-
-app.use('/alunos', AlunosRouter);
-
 /**
  * Get port from environment and store in Express.
  */
@@ -90,9 +87,14 @@ const databaseName = 'test'
 
 mongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }).then(async function (database) {
     // await ModelsDAO.injectDb(database);
+    await dbConnection.saveConnection(database,databaseName)
     await BrandsDAO.injectDb(database);
-    await AlunosDAO.injectDb(database,databaseName)
 
+    // await CursosDAO.injectDb(database,databaseName)
+    
+
+    
+    
     console.log("oudri cand larray")
 
     // await SetupsDAO.injectDb(database);
@@ -111,6 +113,15 @@ mongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }).th
 
 
 
+app.use('/models', modelsRouter);
+app.use('/brands', brandsRouter);
+app.use('/setups', setupsRouter);
+app.use('/logs', testLogRouter);
+
+app.use('/alunos', AlunosRouter);
+
+
+app.use('/cursos', CursosRouter);
 
 
 

@@ -1,29 +1,30 @@
 var express = require("express")
 var router = express.Router()
-const { AlunosCtrl } = require('../controllers/alunos');
-const { AlunosDao } = require('../models/alunos');
+const { CursosCtrl } = require('../controllers/cursos');
+const { CursosDAO } = require('../models/cursos');
 
-var alunosCtrl=new AlunosCtrl()
-/* Route to add a new model */
+var cursosCtrl=new CursosCtrl()
+
+/* Route to get all models */
 router.post('/', function (req, res, next) {
-    alunosCtrl.addRegistro(req, res, next);
+    cursosCtrl.addRegistro(req, res, next);
 });
 
 /* Route to get all models */
 router.get('/', function (req, res, next) {
-    alunosCtrl.getRegistros(req, res, next);
+    cursosCtrl.getRegistros(req, res, next);
 });
 
 /* Route to update one model */
 router.put('/:id', function (req, res, next) {
-    alunosCtrl.updateRegistro(req, res, next);
+    cursosCtrl.updateRegistro(req, res, next);
 });
 
 
 /* Route to delete one model */
 
 router.delete('/', function (req, res, next) {
-    alunosCtrl.deleteRegistros(req, res, next);
+    cursosCtrl.deleteRegistros(req, res, next);
 });
 
 module.exports = router;

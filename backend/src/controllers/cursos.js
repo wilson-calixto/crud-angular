@@ -1,15 +1,18 @@
-const { AlunosDAO } = require ('../models/alunos')
+const { CursosDAO } = require ('../models/cursos')
 const { BaseCtrl } = require ('../controllers/base-controller')
 
 
-class AlunosCtrl extends BaseCtrl {
+class CursosCtrl extends BaseCtrl {
     constructor(){
-        super(new AlunosDAO())
+        super(new CursosDAO())
     }
      
-    
+    preparaRegistro(req){
+        // return  { nome: req.body.nome, turma: req.body.turma };
+        return  { nome: req.body.nome};
+    }
 }
-module.exports = {AlunosCtrl: AlunosCtrl};
+module.exports = {CursosCtrl: CursosCtrl};
 
 
 

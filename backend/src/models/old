@@ -1,0 +1,71 @@
+const mongodb = require('mongodb');
+
+const { dbConnection } = require('../models/database');
+
+let collection;
+class BaseDAO{
+//TODO criar uma classe pai
+    collection;
+    collectionName
+    constructor(collectionName='cursos'){
+        this.collectionName=collectionName
+        this.collection=this.getCollection(collectionName)
+        console.log('constructor',this.collection)
+
+    }
+
+    async getCollection(collectionName){
+        return await dbConnection.getCollection(collectionName)
+    }
+
+    async addRegistrosFromDb(registro){
+        try{
+            console.log('this.collection',this.collection)
+
+            return await this.collection.insertOne(registro);
+        }catch(e){
+            console.error(`Unable to add registry: ${e}`);
+            return { error: e }
+        }
+    }
+
+    async getRegistrosFromDb(){
+        try {
+            return await dbConnection.getCollection(this.collectionName).find({}).toArray();
+        }catch(e){
+            console.error(`Unable to get registry: ${e}`);
+            return { error: e }
+        }
+    }
+
+    async updateRegistroFromDb(registro){
+        console.log('registro',registro)
+        try{
+            return await dbConnection.getCollection(this.collectionName).updateOne(
+                {_id: new mongodb.ObjectID(registro._id)}, 
+                { $set: { nome: registro.nome, turma: registro.turma } } 
+            );
+        }catch(e){
+            console.error(`Unable to update brand: ${e}`);
+            return { error: e }
+        }
+    }
+    
+    async deleteRegistrosFromDb(registros){
+        try{
+            let registrosARemover = registros.map(
+                registro =>            
+                    ({deleteOne: {filter: {_id: new mongodb.ObjectID(registro._id)}}})
+                );
+            const deleteResponse = await dbConnection.getCollection(this.collectionName).bulkWrite(registrosARemover);
+            return deleteResponse;
+        }catch(e){
+            console.error(`Unable to delete brand: ${e}`)
+            return { error: e }
+        }
+    }
+    
+ 
+}
+
+module.exports = { BaseDAO: BaseDAO }

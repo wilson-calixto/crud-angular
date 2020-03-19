@@ -13,9 +13,7 @@ export class GenericCrudService {
   API_URL
   constructor(protected http: HttpClient) {}
   
-  protected setURL(url){
-    this.API_URL=url
-  }
+ 
   getElementos() {
     return this.list();
   }
@@ -23,16 +21,17 @@ export class GenericCrudService {
   list(parametrosDaBusca = null) {
 
     if (parametrosDaBusca === null) {
+      console.log('this.API_URL',this.API_URL)
       return this.http.get<any[]>(this.API_URL)
         .pipe(
-          delay(2000),
+          // delay(2000),
           tap(console.log)
         );
     }
-    console.log(parametrosDaBusca)
+    console.log('parametrosDaBusca',parametrosDaBusca)
     return this.http.get<any[]>(this.API_URL, parametrosDaBusca)
       .pipe(
-        delay(2000),
+        // delay(2000),
         tap(console.log)
       );
   }

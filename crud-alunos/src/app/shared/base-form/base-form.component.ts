@@ -11,7 +11,7 @@ export abstract class BaseFormComponent implements OnInit {
 
   constructor(
     public bsModalRef: BsModalRef,
-    private fb: FormBuilder,
+    protected fb: FormBuilder,
   ) { }
 
   ngOnInit(): void {

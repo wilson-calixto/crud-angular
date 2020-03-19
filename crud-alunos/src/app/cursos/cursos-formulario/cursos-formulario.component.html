@@ -1,21 +1,7 @@
 <form class="needs-validation" novalidate [formGroup]="form" style="padding-top: 10px">
     <div class="form-row">
-        <!-- <div class="col-sm-12">
-            <label for="nome">Nome do Curso</label>
-            <input type="text" class="form-control" id="nome" placeholder="Nome do Aluno" formControlName="nome" />
-        </div> -->
-
         <app-input-field class="col-sm-12" formControlName="nome" [classeCss]="aplicaCssErro('nome')" id="nome"
             label="Nome" [control]="form.get('nome')"></app-input-field>
-
-        <app-input-field class="col-sm-12" formControlName="turma" [classeCss]="aplicaCssErro('turma')" id="turma"
-        label="Turma" [control]="form.get('turma')"></app-input-field>
-
-
-        <!-- <div class="col-sm-12">
-            <label for="turma">testNome da Turma</label>
-            <input type="text" class="form-control" id="turma" placeholder="Nome do Turma" formControlName="turma" />
-        </div> -->
     </div>
 
     <div style="margin-top: 10px">

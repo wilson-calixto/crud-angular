@@ -17,7 +17,7 @@ import { CursosService } from '../cursos.service';
 
 //TODO deixar o displayedColumns genérico
 export class Cursos2Component extends BaseCrudComponent implements OnInit {
-  displayedColumns: string[] = ['select', 'name', 'progress', 'color'];
+  displayedColumns: string[] = ['select', '_id', 'nome'];
   formComponent=CursosFormularioComponent
 
   constructor(
