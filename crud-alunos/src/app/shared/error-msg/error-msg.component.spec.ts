@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TabelaTestComponent } from './tabela-test.component';
+import { ErrorMsgComponent } from './error-msg.component';
 
-describe('TabelaTestComponent', () => {
-  let component: TabelaTestComponent;
-  let fixture: ComponentFixture<TabelaTestComponent>;
+describe('ErrorMsgComponent', () => {
+  let component: ErrorMsgComponent;
+  let fixture: ComponentFixture<ErrorMsgComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TabelaTestComponent ]
+      declarations: [ ErrorMsgComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TabelaTestComponent);
+    fixture = TestBed.createComponent(ErrorMsgComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -34,11 +34,12 @@ import { LoginGuard } from './guards/login.guard';
     HttpClientModule,
     ModalModule.forRoot(),
     AuthModule,
+    SharedModule,
+
     CursosModule,
 
 
     AlunosModule,
-    SharedModule,
     BrowserAnimationsModule,
     MatSliderModule,
     CustomMaterialModule
