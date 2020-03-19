@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import { take, switchMap } from 'rxjs/operators';
-import { EMPTY } from 'rxjs';
+import { take, switchMap, catchError } from 'rxjs/operators';
+import { EMPTY, Observable, observable, Subject } from 'rxjs';
 
 import { AlertModalService } from '../../shared/alert-modal.service';
 import { GenericCrudService } from '../../shared/services/generic-crud.service';
@@ -14,7 +14,7 @@ import { GenericCrudService } from '../../shared/services/generic-crud.service';
   styleUrls: ['./base-crud.component.scss']
 })
 export abstract class BaseCrudComponent implements OnInit {
-  dataSource: MatTableDataSource<any>;
+  dataSource: Observable<MatTableDataSource<any>>;;
   selection = new SelectionModel<any>(true, []);
 
   // @Input() formComponent;
@@ -30,24 +30,40 @@ export abstract class BaseCrudComponent implements OnInit {
     protected service: GenericCrudService,
   ) {  
 
-    this.service.list(null).subscribe(
-      success => {
-        console.log('success',success)
-        this.dataSource = new MatTableDataSource(success);
-      },
-      error => {
-        console.log('error')
-
-      }
-    );
-
+     this.carregaDados()  
     // Assign the data to the data source for the table to render
    
   }
 
+  async carregaDados(){
+
+    this.dataSource = this.service.list(null).pipe(
+      // map(),
+      // tap(),
+      // switchMap(),
+      catchError(error => {
+        console.error(error);
+        // this.error$.next(true);
+        // this.handleError();
+        return EMPTY;
+      })
+    );
+
+    // await this.service.list(null).subscribe(
+    //   success => {
+    //     console.log('success',success)
+    //     // this.dataSource 
+    //     const a = new MatTableDataSource(success)
+    //      =new Subject(a)
+    //   },
+    //   error => {
+    //     console.log('error')
+
+    //   });
+  }
   
   ngOnInit() {
-
+    this.carregaDados() 
   }
 
   refreshSelection(event) {
