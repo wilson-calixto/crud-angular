@@ -7,11 +7,12 @@ import { SharedModule } from '../shared/shared.module';
 import { CursosFormularioComponent } from './cursos-formulario/cursos-formulario.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Cursos2Component } from './cursos2/cursos2.component';
+import { CursosFormDialogComponent } from './cursos-form-dialog/cursos-form-dialog.component';
 
 
 
 @NgModule({
-  declarations: [CursosFormularioComponent,Cursos2Component],
+  declarations: [CursosFormularioComponent,Cursos2Component,CursosFormDialogComponent],
   imports: [
     CommonModule,
     CursosRoutingModule,

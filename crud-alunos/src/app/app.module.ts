@@ -14,6 +14,7 @@ import { AuthService } from './auth/auth.service';
 //   MatSliderModule
 // } from '@angular/material';
 import { MatSliderModule } from '@angular/material/slider';
+import {MatNativeDateModule} from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { MatCardModule} from '@angular/material/card';
 import { CustomMaterialModule } from './custom-material/custom-material.module';
@@ -22,16 +23,22 @@ import { CursosGuard } from './guards/cursos.guard';
 import { AlunosGuard } from './guards/alunos.guard';
 import { AuthModule } from './auth/auth.module';
 import { LoginGuard } from './guards/login.guard';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
+    HttpClientModule,
+    CustomMaterialModule,
+    MatNativeDateModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    HttpClientModule,
+
     ModalModule.forRoot(),
     AuthModule,
     SharedModule,
@@ -40,11 +47,13 @@ import { LoginGuard } from './guards/login.guard';
 
 
     AlunosModule,
-    BrowserAnimationsModule,
     MatSliderModule,
-    CustomMaterialModule
+    
   ],
-  providers: [AuthService,AuthGuardGuard,CursosGuard,AlunosGuard,LoginGuard,SharedModule],
+  providers: [AuthService,AuthGuardGuard,CursosGuard,AlunosGuard,LoginGuard,SharedModule,
+    { provide: MatDialogRef, useValue: {} }, { provide: MAT_DIALOG_DATA, useValue: [] },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
+   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

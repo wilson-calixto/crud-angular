@@ -14,56 +14,39 @@ import { GenericCrudService } from '../../shared/services/generic-crud.service';
   styleUrls: ['./base-crud.component.scss']
 })
 export abstract class BaseCrudComponent implements OnInit {
-  dataSource: Observable<MatTableDataSource<any>>;;
+
+  dataSource = new MatTableDataSource<any>()
+
   selection = new SelectionModel<any>(true, []);
 
   // @Input() formComponent;
   // @Input() displayedColumns: string[];
 
- 
+
   formComponent
   displayedColumns
-  
+
 
   constructor(
     protected alertModalService: AlertModalService,
     protected service: GenericCrudService,
-  ) {  
+  ) {
 
-     this.carregaDados()  
+    this.carregaDados()
     // Assign the data to the data source for the table to render
-   
+
   }
 
-  async carregaDados(){
-
-    this.dataSource = this.service.list(null).pipe(
-      // map(),
-      // tap(),
-      // switchMap(),
-      catchError(error => {
-        console.error(error);
-        // this.error$.next(true);
-        // this.handleError();
-        return EMPTY;
-      })
-    );
-
-    // await this.service.list(null).subscribe(
-    //   success => {
-    //     console.log('success',success)
-    //     // this.dataSource 
-    //     const a = new MatTableDataSource(success)
-    //      =new Subject(a)
-    //   },
-    //   error => {
-    //     console.log('error')
-
-    //   });
+  async carregaDados() {
+    this.dataSource.data = await this.service.list(null).toPromise().then((res: any) => {
+      return res;
+    }).catch((err) => {
+      console.log(err);
+    });
   }
-  
+
   ngOnInit() {
-    this.carregaDados() 
+    // this.carregaDados()
   }
 
   refreshSelection(event) {
@@ -79,12 +62,12 @@ export abstract class BaseCrudComponent implements OnInit {
   }
 
   exibeModal(element) {
-    console.log('typeof(this.service)',typeof(this.service))
     const result$ = this.alertModalService.openGenericEditModal(element, this.formComponent);
-    result$.asObservable()
+
+    result$.afterClosed()
       .pipe(
         take(1),
-        switchMap(result => result['ehvalido'] ? this.service.salvar(result['form'].value) : EMPTY)
+        switchMap(result => result !== null ? this.service.salvar(result) : EMPTY)
       )
       .subscribe(
         success => {

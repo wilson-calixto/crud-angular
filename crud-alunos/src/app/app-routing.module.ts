@@ -17,19 +17,20 @@ const routes: Routes = [
     canLoad: [AuthGuardGuard]
 
   },
-  { path: 'alunos',
-    loadChildren: () => import('./alunos-novo/alunos-novo.module').then(m => m.AlunosNovoModule),
-    // canActivate: [AuthGuardGuard],
-    // // canActivateChild: [AlunosGuard]
-    // canLoad: [AuthGuardGuard]
-  },
-  { path: 'aluno',
+  { path: 'loyane-alunos',
     loadChildren: () => import('./alunos/alunos.module').then(m => m.AlunosModule),
     canActivate: [AuthGuardGuard],
     // canActivateChild: [AlunosGuard]
     canLoad: [AuthGuardGuard]
   },
   
+  { path: 'alunos',
+    loadChildren: () => import('./alunos-novo/alunos-novo.module').then(m => m.AlunosNovoModule),
+    // canActivate: [AuthGuardGuard],
+    // // canActivateChild: [AlunosGuard]
+    // canLoad: [AuthGuardGuard]
+  },
+
   { path :'login',
   loadChildren: ()=> import('./auth/auth.module').then(m => m.AuthModule),
   canActivate: [AuthGuardGuard]

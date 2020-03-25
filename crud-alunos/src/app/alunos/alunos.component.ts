@@ -105,7 +105,10 @@ export class AlunosComponent implements OnInit {
 
   exibeModal(aluno){
     console.log('aluno',aluno)
-    const result$=this.alertModalService.openEditModal(aluno);
+    const result$=this.alertModalService.openEditModal(aluno);   
+    console.log('result$ exibe modal aluno',result$)
+
+
     result$.asObservable()
     .pipe(
       take(1),

@@ -9,7 +9,7 @@ const alunosRoutes = [
     {path: '', component: AlunosComponent, 
      canActivateChild: [AlunosGuard],
      children : [
-        {path: 'novo', component: AlunoFormularioComponent}//,
+        {path: 'novo', component: AlunosComponent}//,AlunoFormularioComponent
         // {path: ':id', component: AlunoDetalheComponent,
         //     resolve: { aluno : AlunoDetalheResolver }
         // },

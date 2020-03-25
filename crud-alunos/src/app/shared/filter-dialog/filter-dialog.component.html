@@ -1,0 +1,25 @@
+<h2 mat-dialog-title class="simple-dialog-title">{{inputData.title}}</h2>
+<mat-dialog-content [formGroup]="form">
+
+    <app-input-field class="col-sm-12" formControlName="nome" [classeCss]="aplicaCssErro('nome')" id="nome"
+    label="Nome" [control]="form.get('nome')"></app-input-field>
+    
+    <app-input-field class="col-sm-12" formControlName="turma" [classeCss]="aplicaCssErro('turma')" id="turma"
+    label="Turma" [control]="form.get('turma')"></app-input-field>
+    
+    
+    <mat-form-field class="col">
+        <mat-label>Brands</mat-label>
+        <mat-select [(ngModel)]="selectedBrand" [ngModelOptions]="{standalone: true}" name="brand">
+            <mat-option [value]="defaultBrand">All Brands</mat-option>
+            <mat-option *ngFor="let parameter of inputData.parameters" [value]="parameter.name">
+                {{parameter.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="btn-custom btn-custom-secondary btn-spacing" (click)="cancelar()">Cancelar</button>
+    <button class="btn-custom btn-custom-primary" (click)="verificaSeValido()">Salvar</button>
+</mat-dialog-actions>
