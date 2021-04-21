@@ -1,2 +1,2 @@
 # crud-angular
-Exemplo básico de crud usando angular e node-js
+Basic crud example using angular and node-js
